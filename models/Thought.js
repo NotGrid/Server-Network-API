@@ -1,5 +1,7 @@
 const { Schema, model} = require('mongoose');
 const mongoose = require('mongoose');
+const moment = require('moment');
+const reactionSchema = require('./Reaction');
 
 const thoughtSchema = new Schema({
     thoughtText: {
@@ -9,14 +11,29 @@ const thoughtSchema = new Schema({
     },
     createdAt: {
         type: Date,
-        // need to set default to current timestamp
-        // use getter to format the timestamp
+        default: Date.now,
+        get: timestamp => moment(timestamp).format('DD/MM/YYYY hh:mm:ss a'),
     },
     username: {
         type: String,
         required: true, 
     },
     reactions: [
-        // nested documents created with the reactionSchema
-    ]
-})
+        reactionSchema
+    ],
+    toJSON: {
+        virtuals: true,
+    },
+    id: false,
+});
+
+userSchema
+  .virtual('reactionCount')
+  // Getter
+  .get(function () {
+    return `${this.reactions.length}`;
+  })
+
+const Thoughts = model('thoughts', thoughtSchema);
+
+module.exports = Thoughts;
