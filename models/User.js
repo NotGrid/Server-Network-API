@@ -12,7 +12,7 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-        // look up how to use mongoose matching validation
+        match: [/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, 'Invalid email'],
     },
     thoughts: [{
         type: Schema.Types.ObjectId,
@@ -22,7 +22,19 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId,
         references: 'User',
     }],
+    toJSON: {
+        virtuals: true,
+    },
+    id: false,
 });
 
-// create a virtual call friendCount that 
-// retrieves the length of the user's friends array field on query.
+userSchema
+  .virtual('friendCount')
+  // Getter
+  .get(function () {
+    return `${this.friends.length}`;
+  });
+
+  const User = model('user', userSchema);
+
+  module.exports = User;
