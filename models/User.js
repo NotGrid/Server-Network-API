@@ -22,6 +22,8 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId,
         references: 'User',
     }],
+},
+{
     toJSON: {
         virtuals: true,
     },
