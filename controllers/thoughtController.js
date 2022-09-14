@@ -18,22 +18,22 @@ const thoughtController = {
         });
     },
     updateThought(req, res) {
-        Thought.findOneAndUpdate(req.params.id).then(dbThoughts => {
+        Thought.findOneAndUpdate(req.params.id, req.body, {new: true}).then(dbThoughts => {
             res.json(dbThoughts);
         });
     },
     deleteThought(req, res) {
-        Thought.findOneAndDelete(req.params.id).then(dbThoughts => {
+        Thought.findOneAndDelete(req.params.id, {new: true}).then(dbThoughts => {
             res.json(dbThoughts);
         });
     },
     newReaction(req, res) {
-        Thought.create(req.params.id).then(dbThoughts => {
+        Thought.create(req.params.thoughtId, {$addToSet: {reactions: req.body}}, {new: true}).then(dbThoughts => {
             res.json(dbThoughts);
         });
     },
     deleteReaction(req, res) {
-        Thought.findOneAndDelete(req.params.id).then(dbThoughts => {
+        Thought.findOneAndUpdate(req.params.thoughtId, {$pull: {reactions: req.params.reactionId}}, {new: true}).then(dbThoughts => {
             res.json(dbThoughts);
         });
     },
