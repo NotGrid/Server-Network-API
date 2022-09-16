@@ -44,7 +44,7 @@ const thoughtController = {
         });
     },
     newReaction(req, res) {
-        Thoughts.create(req.params.thoughtId, {$addToSet: {reactions: req.body}}, {new: true}).then(dbThoughts => {
+        Thoughts.findOneAndUpdate(req.params.thoughtId, {$addToSet: {reactions: req.body}}, {new: true}).then(dbThoughts => {
             res.json(dbThoughts);
         });
     },

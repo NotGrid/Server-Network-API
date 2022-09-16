@@ -13,5 +13,6 @@ router.route('/thoughts/:id').get(singleThought).put(updateThought).delete(delet
 
 router.route('/thoughts/:userId').post(newThoughts);
 
-router.route('/thoughts/:thoughtId/reactions/:reactionId?').post(newReaction).delete(deleteReaction);
+router.route('/thoughts/:thoughtId/reactions').post(newReaction);
+router.route('/thoughts/:thoughtId/reactions/:reactionId').post(newReaction).delete(deleteReaction);
 module.exports = router;
