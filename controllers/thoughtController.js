@@ -48,8 +48,8 @@ const thoughtController = {
             res.json(dbThoughts);
         });
     },
-    deleteReaction(req, res) {
-        Thoughts.findOneAndUpdate(req.params.thoughtId, {$pull: {reactions: req.params.reactionId}}, {new: true}).then(dbThoughts => {
+    deleteReaction({ params }, res) {
+        Thoughts.findOneAndUpdate({ _id: params.thoughtId}, {$pull: {reactions: {reactionId: params.reactionId}}}, {new: true}).then(dbThoughts => {
             res.json(dbThoughts);
         });
     },
